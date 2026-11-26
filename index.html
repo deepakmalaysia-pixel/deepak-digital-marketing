@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brand Manager Path — From CSE Graduate to Brand Leader</title>
+  <meta name="description" content="A free, open learning hub that helps CSE graduates build the skills, portfolio and income streams needed to become a Brand Manager in ~15 years.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#top">Brand<span>Path</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links">
+        <li><a href="#why">Why you</a></li>
+        <li><a href="#plan">First 90 days</a></li>
+        <li><a href="#tracks">Learning tracks</a></li>
+        <li><a href="#roadmap">15-year roadmap</a></li>
+        <li><a href="#opportunities">Opportunities</a></li>
+        <li><a href="#projects">Portfolio projects</a></li>
+      </ul>
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">🌓</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">For CSE graduates who want direction</p>
+      <h1>Engineer today.<br><span class="grad">Brand Manager</span> tomorrow.</h1>
+      <p class="lead">Brand management is no longer only creative intuition. It is data, experimentation, content and technology. Your CSE degree is an unfair advantage. This hub gives you the tracks, the projects and the roadmap to use it.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#plan">Start the 90-day plan</a>
+        <a class="btn" href="#tracks">Browse tracks</a>
+      </div>
+      <div class="progress-card" aria-live="polite">
+        <div class="progress-top">
+          <strong>Your overall progress</strong>
+          <span id="overallPct">0%</span>
+        </div>
+        <div class="bar"><div id="overallBar" class="bar-fill"></div></div>
+        <small id="overallText">0 of 0 steps done</small>
+        <button id="resetBtn" class="link-btn">Reset progress</button>
+      </div>
+    </section>
+
+    <section id="why" class="section">
+      <h2>Why a CSE graduate can win here</h2>
+      <div class="grid cards-3" id="whyGrid"></div>
+    </section>
+
+    <section id="plan" class="section alt">
+      <h2>Your first 90 days</h2>
+      <p class="sub">Directionless is fixed by a schedule. Tick each item as you finish it. Progress is saved in your browser.</p>
+      <div id="planWrap" class="plan"></div>
+    </section>
+
+    <section id="tracks" class="section">
+      <h2>Learning tracks</h2>
+      <p class="sub">Each track has a goal, skills, free resources, practice tasks and a monetisation angle. Start with Foundations, then pick two to go deep on.</p>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search resources, e.g. 'SEO', 'ads', 'YPP'…" aria-label="Search resources">
+        <div id="filters" class="chips" role="group" aria-label="Filter tracks"></div>
+        <div class="expand-btns">
+          <button id="expandAll" class="chip" type="button">Expand all</button>
+          <button id="collapseAll" class="chip" type="button">Collapse all</button>
+        </div>
+        <select id="levelFilter" aria-label="Filter by level">
+          <option value="all">All levels</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+      <div id="trackList" class="tracks"></div>
+      <p id="noResults" class="empty" hidden>No resources match your search.</p>
+    </section>
+
+    <section id="roadmap" class="section alt">
+      <h2>The 15-year roadmap</h2>
+      <p class="sub">Titles and timelines vary by company, but the pattern is consistent: skills first, then ownership of a P&amp;L, then leadership of a brand.</p>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <section id="opportunities" class="section">
+      <h2>Opportunities</h2>
+      <p class="sub">Three doors: get hired, get paid independently, or build your own audience. The strongest candidates use all three.</p>
+      <div class="tabs" id="oppTabs" role="tablist"></div>
+      <div id="oppPanel" class="grid cards-3"></div>
+    </section>
+
+    <section id="projects" class="section alt">
+      <h2>Portfolio projects</h2>
+      <p class="sub">A portfolio beats a certificate. Build these in public and link them in one page.</p>
+      <div id="projectGrid" class="grid cards-3"></div>
+    </section>
+
+    <section class="section">
+      <h2>Weekly habit tracker</h2>
+      <p class="sub">Consistency is the whole game. Log your week.</p>
+      <div id="habits" class="habits"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Open source, built for learners. Contributions welcome. See <code>CONTRIBUTING.md</code>.</p>
+    <p class="muted">Links point to third-party sites. Policies, thresholds and programmes change, so always verify on the official page.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
