@@ -73,27 +73,48 @@
     return hay.includes(q);
   }
 
+  const openTracks = new Set([DATA.tracks[0].id]); // first track open by default
+
   function renderTracks() {
     const q = $("#search").value.trim().toLowerCase();
     const level = $("#levelFilter").value;
     const list = DATA.tracks.filter((t) => trackMatches(t, q, level));
     $("#noResults").hidden = list.length > 0;
-    $("#trackList").innerHTML = list.map((t) => `
-      <details class="track" ${q || activeTrack !== "all" ? "open" : ""}>
+    $("#trackList").innerHTML = list.map((t) => {
+      const isOpen = q || activeTrack !== "all" || openTracks.has(t.id);
+      return `
+      <details class="track" data-tid="${t.id}" ${isOpen ? "open" : ""}>
         <summary>
           <span class="emoji">${t.emoji}</span>
           <span class="t-head"><h3>${esc(t.title)}</h3><p>${esc(t.goal)}</p></span>
           <span class="tag">${esc(t.level)}</span>
           <span class="mini" id="mini-${t.id}"><span></span><div class="bar"><div class="bar-fill"></div></div></span>
+          <span class="chev" aria-hidden="true"></span>
         </summary>
         <div class="track-body">
-          <div><h4>Skills to build</h4><ul>${t.skills.map((s) => `<li>${esc(s)}</li>`).join("")}</ul></div>
-          <div><h4>Free resources</h4><ul class="res">${t.resources.map((r) =>
-            `<li><a href="${safeUrl(r.url)}" target="_blank" rel="noopener noreferrer">${esc(r.name)} ↗</a><small>${esc(r.note)}</small></li>`).join("")}</ul></div>
-          <div><h4>Practice tasks</h4>${t.tasks.map((x, j) => checkbox(`task-${t.id}-${j}`, x)).join("")}</div>
+          <div class="col wide">
+            <h4>Free resources <small>(click a resource to open it)</small></h4>
+            ${t.resources.map((r) => `
+              <details class="res-item" ${q && (r.name + " " + r.note).toLowerCase().includes(q) ? "open" : ""}>
+                <summary><span class="r-name">${esc(r.name)}</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="r-body">
+                  <p>${esc(r.note)}</p>
+                  <a class="btn primary small" href="${safeUrl(r.url)}" target="_blank" rel="noopener noreferrer">Open resource ↗</a>
+                </div>
+              </details>`).join("")}
+          </div>
+          <div class="col">
+            <h4>Skills to build</h4>
+            <ul>${t.skills.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+          </div>
+          <div class="col">
+            <h4>Practice tasks</h4>
+            ${t.tasks.map((x, j) => checkbox(`task-${t.id}-${j}`, x)).join("")}
+          </div>
           <div class="money"><strong>Earning angle:</strong> ${esc(t.money)}</div>
         </div>
-      </details>`).join("");
+      </details>`;
+    }).join("");
     updateProgress();
   }
 
@@ -143,6 +164,25 @@
 
     $("#search").addEventListener("input", renderTracks);
 
+    // remember which tracks the learner opened (toggle does not bubble, so capture)
+    document.addEventListener("toggle", (e) => {
+      const d = e.target;
+      if (d.classList && d.classList.contains("track")) {
+        d.open ? openTracks.add(d.dataset.tid) : openTracks.delete(d.dataset.tid);
+      }
+    }, true);
+
+    $("#expandAll").addEventListener("click", () => {
+      DATA.tracks.forEach((t) => openTracks.add(t.id));
+      $$(".track").forEach((d) => (d.open = true));
+      $$(".res-item").forEach((d) => (d.open = true));
+    });
+    $("#collapseAll").addEventListener("click", () => {
+      openTracks.clear();
+      $$(".track").forEach((d) => (d.open = false));
+      $$(".res-item").forEach((d) => (d.open = false));
+    });
+
     $("#filters").addEventListener("click", (e) => {
       const b = e.target.closest("[data-track]");
       if (!b) return;
@@ -181,7 +221,7 @@
 
   /* ---------- init ---------- */
   load();
-  const preferred = state.theme || (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const preferred = state.theme || "dark";
   document.documentElement.dataset.theme = preferred;
 
   renderWhy(); renderPlan(); renderFilters(); renderTracks();
